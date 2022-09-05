@@ -1,33 +1,20 @@
 @using Models.TicTacToe
 
 
-<MudItem>
+<MudItem @onclick="SquareSelected">
     @if (BaseSquare != null) 
     {
         if(BaseSquare.Mark.HasValue)
         {
-            <MudPaper Class="mud-theme-primary locked square"> @BaseSquare.Mark.Value </MudPaper>
+            <MudPaper Class="mud-theme-primary" Width="140px" Height="140px" style="display: flex; justify-content: center; align-items: center; font-size:100px">@BaseSquare.Mark.Value</MudPaper>
         }
         else
         {
-            <MudPaper Class="mud-theme-primary"/>
+            <MudPaper Class="mud-theme-primary" Width="140px" Height="140px"/>
         }    
     }
 </MudItem>
 
-<style>
-    .locked {
-        display: flex; 
-        justify-content: center; 
-        align-items: center; 
-        font-size:100px;
-    }
-
-    .square {
-        width: 140px;
-        height: 140px;
-    }
-</style>
 
 @code {
     [Parameter]
