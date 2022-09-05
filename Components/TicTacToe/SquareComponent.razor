@@ -1,0 +1,43 @@
+@using Models.TicTacToe
+
+
+<MudItem>
+    @if (BaseSquare != null) 
+    {
+        if(BaseSquare.Mark.HasValue)
+        {
+            <MudPaper Class="mud-theme-primary locked square"> @BaseSquare.Mark.Value </MudPaper>
+        }
+        else
+        {
+            <MudPaper Class="mud-theme-primary"/>
+        }    
+    }
+</MudItem>
+
+<style>
+    .locked {
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        font-size:100px;
+    }
+
+    .square {
+        width: 140px;
+        height: 140px;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public Square? BaseSquare { get; set; }
+    
+    [Parameter]
+    public Action<MouseEventArgs>? ClickParameter { get; set; }
+    
+    public void SquareSelected (MouseEventArgs mouseEventArgs)
+    {
+        ClickParameter?.Invoke(mouseEventArgs);
+    }
+}
