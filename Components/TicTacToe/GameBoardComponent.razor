@@ -1,0 +1,74 @@
+@using Models.TicTacToe
+
+@if (Board != null)
+{
+    @if(Board.Winner.HasValue)
+    {
+        <MudText Typo="Typo.h5" Align="Align.Center">Congrats @Board.Winner.Value you won the game!</MudText>
+    }
+
+    <MudGrid Spacing="2" Justify="Justify.Center">
+    @for (int index = 0; index < 3; index++) 
+    {
+        var square = Board.Squares[index];
+        <SquareComponent BaseSquare="@square" ClickParameter="@(e => SquareClick(e,square))"></SquareComponent>
+    }
+    </MudGrid>
+
+    <MudGrid Spacing="2" Justify="Justify.Center">
+    @for (int index = 3; index < 6; index++) 
+    {
+        var square = Board.Squares[index];
+        <SquareComponent BaseSquare="@square" ClickParameter="@(e => SquareClick(e,square))"></SquareComponent>
+    }
+    </MudGrid>
+
+    <MudGrid Spacing="2" Justify="Justify.Center">
+    @for (int index = 6; index < 9; index++) 
+    {
+        var square = Board.Squares[index];
+        <SquareComponent BaseSquare="@square" ClickParameter="@(e => SquareClick(e,square))"></SquareComponent>
+    }
+    </MudGrid>
+
+    <MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true">Scoreboard:</MudText>
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true">X @Board.XWinns : @Board.OWinns O</MudText>
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" @onclick="@Reset">Restart the game</MudButton>
+}
+
+@code {
+    public GameBoard? Board { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Board = new GameBoard();
+    }
+
+    public void SquareClick(MouseEventArgs mouseEventArgs, Square square)
+    {
+        if (Board is not null)
+        {
+            if (!Board.Winner.HasValue)
+            {
+                if (!square.Mark.HasValue)
+                {
+                    square.Mark = Board.NextTurn;
+                    Board.Next(); 
+                }
+            }
+
+            StateHasChanged();
+        }
+    }
+
+    public void Reset(MouseEventArgs mouseEventArgs)
+    {
+        if (Board is not null) 
+        {
+            Board.ResetGame();
+            StateHasChanged();
+        }
+    }
+}
+
