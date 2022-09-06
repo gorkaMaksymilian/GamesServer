@@ -1,0 +1,70 @@
+@using Models.ConnectFour
+
+@if (Grid != null) {
+    @if(Grid.WinnerColor.HasValue)
+    {
+        <MudText Typo="Typo.h5" Align="Align.Center">Congrats @Grid.WinnerColor.Value you won the game!</MudText>
+    }
+
+    <MudGrid Spacing="1" Justify="Justify.Center">
+        @for (int col = Grid.Pieces.GetLowerBound(0); col <= Grid.Pieces.GetUpperBound(0); col++)
+        {
+                int c = col;
+                <div class="column" @onclick="@(e => ColumnClick(e,c))">
+                    @for (int row = Grid.Pieces.GetUpperBound(1); row >= Grid.Pieces.GetLowerBound(1); row--) {
+                        <SpaceComponent Piece="@Grid.Pieces[col,row]"></SpaceComponent>
+                    }
+                </div>    
+        }
+    </MudGrid>
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" @onclick="@Reset">Restart the game</MudButton>
+
+}
+
+
+
+
+@code {
+    public Grid? Grid {get; set;}
+
+    protected override Task OnInitializedAsync()
+    {
+        Grid = new Grid();
+
+        return base.OnInitializedAsync();
+    }
+
+    public void ColumnClick (MouseEventArgs mouseEventArgs, int col) 
+    {
+        if (Grid is not null && !Grid.WinnerColor.HasValue)
+        {
+            for (var row = Grid.Pieces.GetLowerBound(1); row <= Grid.Pieces.GetUpperBound(1); row++) 
+            {
+                if (!Grid.Pieces[col,row].HasValue)
+                {
+                    Grid.Pieces[col,row] = Grid.NextTurn;
+                    Grid.IsWinningMove(col,row);
+                    
+                    Grid.SetNextTurn();
+                    break;
+                    
+                }
+            }
+        }
+        
+    }
+
+    public void Reset(MouseEventArgs mouseEventArgs)
+    {
+        if (Grid is not null)
+        {
+            Grid.ResetGame();
+            StateHasChanged();
+        }
+    }
+
+
+     
+}
+

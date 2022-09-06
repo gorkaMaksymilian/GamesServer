@@ -1,0 +1,25 @@
+@using Models.ConnectFour
+<MudItem style="padding-bottom: 8px; padding-right: 8px;">
+    <MudPaper Class="mud-theme-primary" Height="100px" Width="100px" style="display: flex; justify-content: center; align-items: center;">
+        @if (Piece.HasValue) {
+            @if (Piece.Value == PieceEnum.Red) {
+                <div style="background-color: red; Width: 80px; Height: 80px; border-radius:50%"></div>
+            }
+            else if (Piece.Value == PieceEnum.Yellow) {
+                <div style="background-color: yellow; Width: 80px; Height: 80px; border-radius:50%"></div>
+            }
+        }
+        else {
+            <div style="background-color: white; Width: 80px; Height: 80px; border-radius:50%"></div>
+        }
+        
+    </MudPaper>
+</MudItem>
+
+
+
+@code {
+    [Parameter]
+    public PieceEnum? Piece {get; set;}
+
+}
